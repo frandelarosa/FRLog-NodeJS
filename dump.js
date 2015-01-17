@@ -53,10 +53,13 @@ module.exports = {
 	});
   	
   },
+  
   // Create a new log file base on timestamp
   createFile: function(f_name, f_data){
 	
-	fs.writeFile("./" + f_name, "Hey there!", function(err) {
+	var dataToAppend = "\r";
+	
+	fs.writeFile("./" + f_name, dataToAppend, function(err) {
 		if(err) {
 			console.log(err);
 		} else {
@@ -68,14 +71,14 @@ module.exports = {
 	
   },
   
+  // Append lines to an existing file
   writeToFile: function(data){
+  	
+  	 var dataToAppend = "\r" + data;
 	 
-	 fs.open(filename, "w", function(error, fd) {
-				fs.appendFile(filename, data, encoding='utf8', function (err) {
-					if (err) throw err;
-					console.log("data saved");
-				});
-			});
+	 fs.appendFile(filename, dataToAppend, function (err) {
+
+	 });
 	  
   }
   

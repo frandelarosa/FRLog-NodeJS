@@ -31,7 +31,6 @@ http.createServer(function (req, res) {
 	req.on('data', function(data) {
 		var JSONObject = JSON.parse(data.toString());
 		parser.parseObject(JSONObject);
-		
 	});
 
   }
