@@ -1,0 +1,10 @@
+{
+  "name": "FRLog",
+  "version": "0.0.1",
+  "description": "Logging server for iOS.",
+  "dependencies": {
+    "express": "^4.10.2",
+    "prompt": "^0.2.14",
+    "chalk": "^0.5.1"
+  }
+}
