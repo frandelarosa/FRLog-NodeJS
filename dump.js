@@ -11,14 +11,15 @@
 *
 *-------------------------------------------------------------------------*/
 
-var fs = require("fs");
+var fs    = require("fs");
+var chalk = require("chalk")
 
 var file_sufix = "_frlog.log"
 var filename;
 
 module.exports = {
 
-  dumpToFile: function(data) {
+  dumpToFile:function(data) {
   
   	var _self = this;
   
@@ -26,19 +27,15 @@ module.exports = {
   	var currentDate = new Date();
   
 	var month = currentDate.getUTCMonth() + 1;
-	var day   = currentDate.getUTCDate();
-	var year  = currentDate.getUTCFullYear();
-	
-	var hours   = currentDate.getHours();
-	var minutes = currentDate.getMinutes();
-	var seconds = currentDate.getSeconds();
+	var day   = currentDate.getUTCDate().toString();
+	var year  = currentDate.getFullYear().toString();
 	
 	// Date string
-	var dateStr = year + month + day + "_" + hours + ":" + minutes + ":" + seconds;
+	var dateStr = year + month + day;
   	
   	// Filename
   	if (!filename){
-  		filename = "./" + dateStr + file_sufix;
+  		filename = dateStr + file_sufix;
   	}
     	
     // Check if file exists
@@ -55,15 +52,15 @@ module.exports = {
   },
   
   // Create a new log file base on timestamp
-  createFile: function(f_name, f_data){
+  createFile:function(f_name, f_data) {
 	
 	var dataToAppend = "\r";
 	
-	fs.writeFile("./" + f_name, dataToAppend, function(err) {
+	fs.writeFile(f_name, dataToAppend, function(err) {
 		if(err) {
 			console.log(err);
 		} else {
-			console.log("The file was saved!");
+			console.log(chalk.bgMagenta('--- NEW FILE CREATED', chalk.bold(f_name) + ' ---'));
 			filename = f_name;
 		}
 	}); 
@@ -72,12 +69,14 @@ module.exports = {
   },
   
   // Append lines to an existing file
-  writeToFile: function(data){
+  writeToFile:function(data) {
   	
   	 var dataToAppend = "\r" + data;
 	 
-	 fs.appendFile(filename, dataToAppend, function (err) {
-
+	 fs.appendFile(filename, dataToAppend, function(err) {
+		 if(err){
+			 console.log(chalk.red("--- ERROR WHILE SAVING DATA IN " + filename + "---"));
+		 }
 	 });
 	  
   }

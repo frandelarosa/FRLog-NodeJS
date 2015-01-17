@@ -1,9 +1,23 @@
+/*-------------------------------------------------------------------------
+*
+*   FRLog v0.1
+*   17-01-15
+*   Francisco de la Rosa (c)
+*
+*   Server application to get log objects that are being sent by iOS client.
+*
+*   DEPENDENCIES
+*    - node chalk module
+*    - dump.js
+*
+*-------------------------------------------------------------------------*/
+
 var chalk = require('chalk');
 var dump  = require('./dump');
 
 module.exports = {
 
-  parseObject: function(data) {
+  parseObject:function(data) {
   
   	var strToConsole = "";
   	
@@ -18,14 +32,14 @@ module.exports = {
   	}
            
     // Dump to file
-   // dump.dumpToFile(log_str);
+    dump.dumpToFile(strToConsole);
     
     // Output console
     console.log(strToConsole);
     
   },
   
-  addClassnameAndLine: function(data){
+  addClassnameAndLine:function(data){
 	  
 	  var obj_classname = data.obj_classname;
 	  var obj_line      = data.obj_line;
@@ -42,7 +56,7 @@ module.exports = {
 	  
   },
   // Parse FRLogURL Object
-  parseURL: function(data){
+  parseURL:function(data){
 	  
 	  // Title
 	  var log_str = chalk.green.bold("URL");
@@ -57,7 +71,7 @@ module.exports = {
 	  
   },
   // Parse FRLogObject
-  parseInfo: function(data){
+  parseInfo:function(data){
 	  
 	  var log_str = chalk.yellow.bold("INFO");
 	  

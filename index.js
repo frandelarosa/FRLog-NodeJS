@@ -8,16 +8,16 @@
 *
 *   DEPENDENCIES
 *    - node http module
+*    - node chalk module
 *    - parser.js
 *    - commandline.js
-*    - node chalk module
 *
 *-------------------------------------------------------------------------*/
 
 var http    = require('http'); // http module
+var chalk   = require('chalk');
 var parser  = require('./parser'); // parser module
 var cmdline = require('./commandline'); // commandline module
-var chalk   = require('chalk');
 
 var servertPort = 3000;
 
