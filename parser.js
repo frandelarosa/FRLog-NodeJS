@@ -12,8 +12,9 @@
 *
 *-------------------------------------------------------------------------*/
 
-var chalk = require('chalk');
-var dump  = require('./dump');
+var chalk  = require('chalk');
+var dump   = require('./dump');
+var screen = require('./screen');
 
 module.exports = {
 
@@ -35,7 +36,7 @@ module.exports = {
     dump.dumpToFile(strToConsole);
     
     // Output console
-    console.log(strToConsole);
+    screen.appendLine(strToConsole);
     
   },
   
@@ -44,7 +45,7 @@ module.exports = {
 	  var obj_classname = data.obj_classname;
 	  var obj_line      = data.obj_line;
 	 
-	  return chalk.gray(" " + obj_classname + ":" + obj_line);
+	  return chalk.red(" " + obj_classname + ":" + obj_line);
 	  
   },
   

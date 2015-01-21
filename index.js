@@ -18,6 +18,7 @@ var http    = require('http'); // http module
 var chalk   = require('chalk');
 var parser  = require('./parser'); // parser module
 var cmdline = require('./commandline'); // commandline module
+var screen  = require('./screen');
 
 var servertPort = 3000;
 
@@ -37,6 +38,10 @@ http.createServer(function (req, res) {
   
 }).listen(servertPort);
 
+/*
 console.log("\033[2J");
 console.log(chalk.bgBlue('--- FRLOG LISTENING ON', chalk.bold(servertPort) + ' ---'));
 console.log("\r");
+*/
+
+screen.drawScreens();
