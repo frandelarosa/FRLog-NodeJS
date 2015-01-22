@@ -8,9 +8,9 @@
 *
 *   DEPENDENCIES
 *    - node http module
-*    - node chalk module
 *    - parser.js
-*    - commandline.js
+*    - screen.js
+*    - manager.js
 *
 *-------------------------------------------------------------------------*/
 
@@ -32,9 +32,11 @@ http.createServer(function (req, res) {
 	
 		var JSONObject = JSON.parse(data.toString());
 		
+		// Parse object
 		parser.parseObject(JSONObject);
-		manager.addLogObject(JSONObject, screen);
 		
+		// Store object
+		manager.addLogObject(JSONObject, screen);
 		
 	});
 

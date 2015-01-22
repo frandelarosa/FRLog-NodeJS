@@ -7,14 +7,21 @@
 *   Server application to get log objects that are being sent by iOS client.
 *
 *   DEPENDENCIES
-*    - node readline module
+*    - none
 *
 *-------------------------------------------------------------------------*/
 
+var commands = {
+	help: "Show this screen",
+	autoscroll: "Enable or disable console autoscroll",
+	config: "Show current settings of FRLog",
+	quit: "Shutdown FRLog"
+}
+
 module.exports = {
 
-	showHelp:function(command){
-		
+	getHelp:function(){
+		return commands;	
 	}
   
 };

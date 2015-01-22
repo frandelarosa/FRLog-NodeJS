@@ -7,16 +7,17 @@
 *   Server application to get log objects that are being sent by iOS client.
 *
 *   DEPENDENCIES
-*    - node http module
-*    - node chalk module
-*    - parser.js
-*    - commandline.js
+*    - node blessed module
+*    - commandLine.js
+*    - config.js
+*    - prettyjson.js
 *
 *-------------------------------------------------------------------------*/
 
-var blessed  = require('blessed');
-var commands = require('./commandline');
-var config   = require('./config');
+var blessed    = require('blessed');
+var commands   = require('./commandline');
+var config     = require('./config');
+var prettyjson = require('prettyjson');
 
 // Create a screen object.
 var screen = blessed.screen({
@@ -104,6 +105,7 @@ module.exports = {
 		screen.append(boxLog);
 		
 	},
+	// Draw console screen
 	drawConsoleScreen:function(){
 		
 		boxConsole = blessed.scrollabletext({
@@ -183,6 +185,8 @@ module.exports = {
 		
 	},
 	
+	/** Lines **/
+	
 	appendLine:function(data){
 		
 		boxLog.insertBottom(data);
@@ -200,12 +204,44 @@ module.exports = {
 		screen.render();
 	},
 	
+	/** Scroll **/
+	
 	updateScroll:function(){
 		boxLog.scroll(1);
 	},
 	
 	updateConsoleScroll:function(){
-		boxConsole.scroll(1);
+		boxConsole.scrollTo(this.getConsoleLines().length);
+	},
+	
+	getConsoleLines:function(){
+		return boxConsole.getLines();
+	},
+	
+	/** Print JSON **/
+	
+	makeTextBasedJSON:function(json_parsed, title){
+	
+		var options = {
+			keysColor: 'green',
+			dashColor: 'magenta',
+			stringColor: 'white'
+		};
+		
+		var line = "\n" + title + "\n\n" + prettyjson.render(json_parsed, options) + "\n";
+		
+		return line;
+		
+	},
+	
+	/** Clear **/
+	
+	clearLog:function(){
+		
+	},
+	
+	clearConsole:function(){
+		
 	}
   
 };
