@@ -15,10 +15,9 @@
 *-------------------------------------------------------------------------*/
 
 var http    = require('http'); // http module
-var chalk   = require('chalk');
 var parser  = require('./parser'); // parser module
-var cmdline = require('./commandline'); // commandline module
 var screen  = require('./screen');
+var manager = require('./manager');
 
 var servertPort = 3000;
 
@@ -30,8 +29,13 @@ http.createServer(function (req, res) {
 
 	// Handle recieved data
 	req.on('data', function(data) {
+	
 		var JSONObject = JSON.parse(data.toString());
+		
 		parser.parseObject(JSONObject);
+		manager.addLogObject(JSONObject, screen);
+		
+		
 	});
 
   }

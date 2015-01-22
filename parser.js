@@ -15,6 +15,9 @@
 var chalk  = require('chalk');
 var dump   = require('./dump');
 var screen = require('./screen');
+var config = require('./config');
+
+var idx = 0;
 
 module.exports = {
 
@@ -33,10 +36,10 @@ module.exports = {
   	}
            
     // Dump to file
-    dump.dumpToFile(strToConsole);
+    //dump.dumpToFile(strToConsole);
     
     // Output console
-    screen.appendLine(strToConsole);
+    screen.appendLine(" #" + (idx++) + " " + strToConsole);
     
   },
   
