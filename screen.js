@@ -201,6 +201,7 @@ module.exports = {
 	
 	appendLineToConsole:function(data){
 		boxConsole.insertBottom(data);
+		this.updateConsoleScroll();
 		screen.render();
 	},
 	
@@ -223,7 +224,7 @@ module.exports = {
 	makeTextBasedJSON:function(json_parsed, title){
 	
 		var options = {
-			keysColor: 'green',
+			keysColor: 'cyan',
 			dashColor: 'magenta',
 			stringColor: 'white'
 		};

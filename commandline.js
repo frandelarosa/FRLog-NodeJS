@@ -16,6 +16,9 @@
 var manager    = require('./manager');
 var config     = require('./config');
 var help       = require('./help');
+var chalk      = require('chalk');
+
+var cmdnotfound = " command not found";
 
 var screenInstance;
 
@@ -56,6 +59,7 @@ module.exports = {
 				break;
 				
 			/** Quit **/
+			
 			case "quit":
 				this.commandQuit();
 				break;
@@ -63,9 +67,9 @@ module.exports = {
 			/** Default **/
 				
 			default:
-				screenInstance.appendLineToConsole("\'" + command + "' command not found");
-				screenInstance.updateConsoleScroll();
+				this.commandNotFound(new Array(command));
 				break;
+				
 		}	
 
 	},
@@ -73,8 +77,6 @@ module.exports = {
 	execCommandsWithArgs:function(command_args){
 	
 		var cmd = command_args[0];
-		
-		screenInstance.appendLineToConsole('args: ' + cmd);
 		
 		switch(cmd){
 		
@@ -96,6 +98,18 @@ module.exports = {
 				}else if (command_args[1] === "off"){
 					this.commandAutoScrollOff();
 				}
+				break;
+				
+			/** Request Filters **/
+			
+			case "reqfilter":
+				this.commandRequestFilter(command_args);
+				break;
+				
+			default:
+				this.commandNotFound(new Array(cmd));
+				break;
+				
 		}	
 		
 		
@@ -108,7 +122,6 @@ module.exports = {
 		var text = screenInstance.makeTextBasedJSON(configStr, "Settings");
 		
 		screenInstance.appendLineToConsole(text);
-		screenInstance.updateConsoleScroll();
 		
 	},
 	/** Shows help on the screen **/
@@ -119,7 +132,6 @@ module.exports = {
 		var text = screenInstance.makeTextBasedJSON(helpText, "Commands List");
 		
 		screenInstance.appendLineToConsole(text);
-		screenInstance.updateConsoleScroll();
 		
 	},
 	/** Tun off autoscroll on log screen **/
@@ -139,6 +151,84 @@ module.exports = {
 	/** Quit FRLog **/
 	commandQuit:function(){
 		process.exit(code=0);
-	}
-  
+	},
+	/** Add or Remove URL filter **/
+	commandRequestFilter:function(filter){
+	
+		var _self_ = this;
+	
+		// Add o delete filter
+		var createFilter = function(){
+			
+			if (filter[1] === "add" || filter[1] === "delete"){
+				
+				switch(filter[1]){
+					case "add":
+						// Add filter
+						var res = config.addReqFilter(filter[2]);
+				
+						if (res == 1){
+							screenInstance.appendLineToConsole("Filter '" + filter[2] + "' added");
+						}else if(res == 2){
+							screenInstance.appendLineToConsole("Filter '" +filter[2] + "' has already been added");
+						}else{
+							screenInstance.appendLineToConsole("Can't add '" + filter[2] + "' filter");
+						}
+					break;
+					
+					case "delete":
+					break;
+				}
+
+			}else{
+			
+				_self_.commandNotFound(filter);
+			}
+
+		}
+		
+		// Parse arguments
+		switch(filter.length){
+			case 1:
+				this.commandsExpected(filter, 3);
+				break;
+				
+			case 2:
+				if (filter[1] !== "add" || filter[1] !== "delete"){
+					this.commandNotFound(filter);
+				}else{
+					this.commandsExpected(filter, 3);
+				}
+				break;
+			
+			case 3:
+				createFilter();			
+				break;
+
+		}
+	
+		
+	},
+	/** Show command not found **/
+	commandNotFound:function(command){
+			
+		var commandParsed = "";
+	
+		if (command.length > 1){
+			commandParsed = command.join(" ");
+		}else{
+			commandParsed = command;
+		}
+		
+		screenInstance.appendLineToConsole("'" + commandParsed + "'" + cmdnotfound);
+		
+	},
+	
+	commandsExpected:function(commands, length){
+		
+		screenInstance.appendLineToConsole("'" + commands.join(" ") + "' have " + commands.length + " argument(s), expected " + length);
+		
+	},
+	
+	
 };

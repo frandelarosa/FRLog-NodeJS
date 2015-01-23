@@ -38,8 +38,10 @@ module.exports = {
     // Dump to file
     //dump.dumpToFile(strToConsole);
     
-    // Output console
-    screen.appendLine(" #" + (idx++) + " " + strToConsole);
+    if (strToConsole.length > 0){
+		// Output console
+		screen.appendLine(" #" + (idx++) + " " + strToConsole);
+    }
     
   },
   
@@ -61,16 +63,43 @@ module.exports = {
   },
   // Parse FRLogURL Object
   parseURL:function(data){
+  
+	  var printLine = false;
 	  
 	  // Title
 	  var log_str = chalk.green.bold("URL");
 	  
-	  // Request name
-	  log_str += " " + chalk.green(data.obj_requestname);
+	  // Check if there are any active filters
+	  var filters = config.getReqFilter();
+	
+	  if (new String(filters[0]).length > 0){
+	  			
+		for (var i = 0; i<filters.length; i++){
+			
+			var currentFilter = filters[i];
+			
+			if (currentFilter === data.obj_requestname){
+				printLine = true;
+				break;
+			}
+			
+		}
+		
+	  }else {
+		printLine = true;
+	  }
 	  
-	  // Full URL
-	  log_str += " " + chalk.white(data.obj_url);
+	  if (printLine == true){
 	  
+		// Request name  
+		log_str += " " + chalk.green(data.obj_requestname);
+		// Full URL
+		log_str += " " + chalk.white(data.obj_url);
+		
+	  }else{
+		log_str = "";
+	  }
+
 	  return log_str;
 	  
   },

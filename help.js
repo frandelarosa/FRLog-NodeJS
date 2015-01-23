@@ -14,8 +14,9 @@
 var commands = {
 	help: "Show this screen",
 	autoscroll: "Enable or disable console autoscroll",
+	reqfilter: "Add o remove request filter",
 	config: "Show current settings of FRLog",
-	quit: "Shutdown FRLog"
+	quit: "Shutdown FRLog",
 }
 
 module.exports = {
