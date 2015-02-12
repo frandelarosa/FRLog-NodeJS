@@ -24,7 +24,7 @@ var screen = blessed.screen({
 	resizeTimeout: '300'
 });
 
-var boxTitle, boxLog, boxInput, boxConsole;
+var boxTitle, boxLog, boxInput, boxConsole, boxJSON;
 
 module.exports = {
 
@@ -185,6 +185,45 @@ module.exports = {
 		
 	},
 	
+	drawShowJSONScreen:function(){
+		
+		boxJSON = blessed.scrollabletext({
+			top: '20%',
+			left: 'center',
+			width: '70%',
+			height: '70%',
+			keys: true,
+			mouse: true,
+			tags: true,
+			vi: true,
+			scrollbar: {
+				fg: 'yellow',
+				ch: '|'
+			},
+			padding: {
+				left: 1
+			},
+			border: {
+				type: 'line'
+			},
+			style: {
+				fg: 'white',
+				// bg: 'magenta',
+				border: {
+					fg: '#f0f0f0'
+				},
+			}
+		});
+		
+		boxJSON.on('click', function(data) {
+			screen.remove(boxJSON);
+			screen.render();
+		});
+		
+		screen.append(boxJSON);
+		
+	},
+	
 	/** Lines **/
 	
 	appendLine:function(data){
@@ -202,6 +241,11 @@ module.exports = {
 	appendLineToConsole:function(data){
 		boxConsole.insertBottom(data);
 		this.updateConsoleScroll();
+		screen.render();
+	},
+	
+	appendLineToBoxJSON:function(data){
+		boxJSON.insertTop(data);
 		screen.render();
 	},
 	

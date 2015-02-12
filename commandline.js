@@ -17,6 +17,7 @@ var manager    = require('./manager');
 var config     = require('./config');
 var help       = require('./help');
 var chalk      = require('chalk');
+var request    = require('./request');
 
 var cmdnotfound = " command not found";
 
@@ -62,6 +63,11 @@ module.exports = {
 			
 			case "quit":
 				this.commandQuit();
+				break;
+				
+			/** Test **/
+			case "test":
+				this.commandTest();
 				break;
 				
 			/** Default **/
@@ -151,6 +157,17 @@ module.exports = {
 	/** Quit FRLog **/
 	commandQuit:function(){
 		process.exit(code=0);
+	},
+	commandTest:function(){
+		
+		// Draw BoxJSON
+		screenInstance.drawShowJSONScreen();
+		
+		var url = "http://jsonplaceholder.typicode.com/users";
+		
+		// Make Request to get JSON Data
+		request.getDataFromURL(url, screenInstance);		
+		
 	},
 	/** Add or Remove URL filter **/
 	commandRequestFilter:function(filter){

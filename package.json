@@ -5,6 +5,7 @@
   "dependencies": {
     "express": "^4.10.2",
     "prompt": "^0.2.14",
-    "chalk": "^0.5.1"
+    "chalk": "^0.5.1",
+    "request-json": "^0.5.2"
   }
 }
