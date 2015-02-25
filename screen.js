@@ -36,9 +36,11 @@ module.exports = {
 		this.drawInputScreen();
 		
 		// Quit on ESC, q, or CTRL-C
+		/*
 		screen.key(['escape', 'C-c'], function(ch, key) {
 		  return process.exit(0);
 		});
+		*/
 		
 		// Render the screen
 		screen.render();
@@ -82,7 +84,7 @@ module.exports = {
 			keys: true,
 			mouse: true,
 			tags: true,
-			vi: true,
+			clickable: true,
 			scrollbar: {
 				fg: 'yellow',
 				ch: '|'
@@ -101,7 +103,7 @@ module.exports = {
 			}
 		});
 
-		// Append our box to the screen.
+		// Append our box to the screen
 		screen.append(boxLog);
 		
 	},
@@ -116,8 +118,8 @@ module.exports = {
 			content: '{blue-fg} Welcome to FRLog 1.0{/blue-fg}',
 			keys: true,
 			mouse: true,
+			clickable: true,
 			tags: true,
-			vi: true,
 			scrollbar: {
 				fg: 'yellow',
 				ch: '|'
@@ -194,8 +196,8 @@ module.exports = {
 			height: '70%',
 			keys: true,
 			mouse: true,
+			clickable: true,
 			tags: true,
-			vi: true,
 			scrollbar: {
 				fg: 'yellow',
 				ch: '|'
@@ -218,6 +220,10 @@ module.exports = {
 		boxJSON.on('click', function(data) {
 			screen.remove(boxJSON);
 			screen.render();
+		});
+		
+		boxJSON.on('enter', function(data) {
+			this.appendLineToConsole("TEST");
 		});
 		
 		screen.append(boxJSON);
@@ -249,6 +255,14 @@ module.exports = {
 		screen.render();
 	},
 	
+	getLogLines:function(){
+		return boxLog.getLines();	
+	},
+	
+	getConsoleLines:function(){
+		return boxConsole.getScreenLines();
+	},
+	
 	/** Scroll **/
 	
 	updateScroll:function(){
@@ -258,11 +272,7 @@ module.exports = {
 	updateConsoleScroll:function(){
 		boxConsole.scrollTo(this.getConsoleLines().length);
 	},
-	
-	getConsoleLines:function(){
-		return boxConsole.getLines();
-	},
-	
+		
 	/** Print JSON **/
 	
 	makeTextBasedJSON:function(json_parsed, title){
@@ -283,9 +293,19 @@ module.exports = {
 	
 	clearLog:function(){
 		
+		for (var i=0; i<this.getLogLines().length; i++){
+			boxLog.deleteLine(i);
+			screen.render();
+		}
+		
 	},
 	
 	clearConsole:function(){
+		
+		for (var i=0; i<this.getConsoleLines().length; i++){
+			boxConsole.deleteLine(i);
+			screen.render();
+		}
 		
 	}
   

@@ -65,11 +65,6 @@ module.exports = {
 				this.commandQuit();
 				break;
 				
-			/** Test **/
-			case "test":
-				this.commandTest();
-				break;
-				
 			/** Default **/
 				
 			default:
@@ -110,6 +105,15 @@ module.exports = {
 			
 			case "reqfilter":
 				this.commandRequestFilter(command_args);
+				break;
+				
+			/** Get **/
+			case "get":
+				if (command_args[1].indexOf("#") > -1 && command_args[1].length > 1){
+					this.commandGet(command_args[1]);
+				}else{
+					this.commandNotFound(new Array(command_args));
+				}
 				break;
 				
 			default:
@@ -158,16 +162,39 @@ module.exports = {
 	commandQuit:function(){
 		process.exit(code=0);
 	},
-	commandTest:function(){
+	commandGet:function(data){
+	
+		// Get request ID
+		var requestId = data.substring(1, data.length);
+	
+		// Get Object from manager
+		var objects = manager.getLogObjects();
 		
-		// Draw BoxJSON
-		screenInstance.drawShowJSONScreen();
+		var objRequest = objects[requestId];
 		
-		var url = "http://jsonplaceholder.typicode.com/users";
+		if (objRequest == null){
 		
-		// Make Request to get JSON Data
-		request.getDataFromURL(url, screenInstance);		
+			screenInstance.appendLineToConsole("Object " + data + " not found");
+			
+		}else{
 		
+			if (objRequest.obj_type == "1"){
+			
+				// Draw BoxJSON
+				screenInstance.drawShowJSONScreen();
+			
+				// Make Request to get JSON Data
+				request.getDataFromURL(objRequest.obj_url, screenInstance);
+				
+			}else{
+				
+				screenInstance.appendLineToConsole("Object " + data + " isn't URL type");
+				
+			}
+		
+		}
+				
+				
 	},
 	/** Add or Remove URL filter **/
 	commandRequestFilter:function(filter){
